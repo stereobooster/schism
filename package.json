@@ -1,0 +1,15 @@
+{
+  "name": "schism",
+  "version": "1.0.0",
+  "main": "index.html",
+  "repository": "git@github.com:stereobooster/schism.git",
+  "author": "stereobooster <stereobooster@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "codemirror": "^5.35.0",
+    "parinfer-codemirror": "^1.4.2"
+  },
+  "scripts": {
+    "build": "rm -rf vendor && mkdir vendor && cp node_modules/parinfer/parinfer.js vendor && cp node_modules/parinfer-codemirror/parinfer-codemirror.js vendor && cp node_modules/codemirror/lib/codemirror.css vendor && cp node_modules/codemirror/lib/codemirror.js vendor && cp node_modules/codemirror/mode/scheme/scheme.js vendor && cp node_modules/codemirror/mode/clojure/clojure.js vendor && cp node_modules/codemirror/addon/selection/active-line.js vendor && cp node_modules/codemirror/addon/edit/matchbrackets.js vendor"
+  }
+}

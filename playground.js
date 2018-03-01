@@ -15,13 +15,6 @@
 
 import * as Schism from  './rt/rt.js';
 
-//const old_peek = rt['peek-char'];
-//rt['peek-char'] = function() {
-//  const result = old_peek();
-//  console.info(`peek: ${result}`);
-//  return result;
-//}
-
 async function compileSchism() {
   const schism_bytes = await fetch('schism-stage0.wasm', { credentials: 'include' });
   const engine = new Schism.Engine;
@@ -32,8 +25,7 @@ async function compileSchism() {
 
 const compiler = compileSchism();
 
-async function compileAndRun() {
-  const src = document.getElementById('src').value;
+export async function compileAndRun(src) {
   console.info(`Compiling program: '${src}'`);
   const { schism, engine } = await compiler;
   const compile = schism.exports['compile-stdin->stdout'];
@@ -59,11 +51,18 @@ async function compileAndRun() {
   engine.output_data.length = 0;
 
   const scheme_result = engine.jsFromScheme(result.instance.exports.main());
-  document.getElementById('result').innerHTML = "" + scheme_result;
-
-  console.info("Done");
+  return "" + scheme_result;
 }
 
+const cm = window.CodeMirror.fromTextArea(document.getElementById("src"));
+
 document.getElementById('go').addEventListener('click', () => {
-  compileAndRun();
+  // const src = document.getElementById('src').value;
+  const src = cm.getValue();
+  compileAndRun(src).then(scheme_result => {
+    document.getElementById('result').innerHTML = scheme_result;
+  }).catch(e => {
+    console.error(e)
+    document.getElementById('result').innerHTML = e;
+  });
 });
